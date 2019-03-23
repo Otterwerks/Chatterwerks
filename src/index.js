@@ -6,6 +6,16 @@ import App from './components/App';
 import rootReducer from './reducers';
 import * as serviceWorker from './serviceWorker';
 
+setInterval(function() {
+    const chatField = document.getElementById("chatField");
+    if (chatField != null) {
+        let isScrolledToBottom = chatField.scrollHeight - chatField.clientHeight <= chatField.scrollTop + 100;
+        if (isScrolledToBottom) {
+          chatField.scrollTop = chatField.scrollHeight - chatField.clientHeight;
+        }
+    }
+}, 1000)
+
 const logger = store => next => action => {
   console.log('dispatching', action)
   let result = next(action)
