@@ -3,3 +3,4 @@ node_modules
 __pycache__
 .DS_Store
 build
+psql_info.py
