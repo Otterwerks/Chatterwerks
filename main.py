@@ -15,6 +15,14 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Message_ID %r>' % self.message_id
+
+class User(db.Model):
+    user_id = db.Column(db.Ineger, primary_key=True)
+    user_name = db.Column(db.String(40), nullable=False)
+    user_password = db.Column(db.string(12), nullable=False)
+
+    def __repr__(self):
+        return '<User_ID %r>' % self.user_id
         
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
