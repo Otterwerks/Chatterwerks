@@ -52,6 +52,12 @@ class Subscription(db.Model):
     def __repr__(self):
         return '<Subscription_ID %r>' % self.subscription_id
 
+def Get_User_ID(name, password):
+    user = User.query.filter_by(user_name=name, user_password=password).first()
+    if user is None:
+        return "id_not_found"
+    else:
+        return user.user_id
         
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -61,14 +67,33 @@ def static_site(path):
     else:
         return send_from_directory('build', 'index.html')
 
-@app.route('/api/v1/messages/query', methods=['GET'])
+@app.route('/api/v1/users/register', methods=['POST'])
+def register_user():
+    print(request.get_json())
+    r = request.get_json()
+    try:
+        user_exists = Users.query.filter_by(user_name = r['user_name']).first()
+        if user_exists is None:
+            user_to_register = User(user_name=r["user_name"], user_password=r["user_password"])
+            print("Successful object creation")
+            db.session.add(user_to_register)
+            print("Successful session add")
+            db.session.commit()
+            print("Successful session commit")
+            return jsonify({"success": "true"})
+        else:
+            return jsonify({"success": "username_taken"})
+    except:
+        return jsonify({"success": "false"})
+
+@app.route('/api/v1/messages/query', methods=['POST'])
 
 @app.route('/api/v1/messages/submit', methods=['POST'])
 def api_submit():
     print(request.get_json())
     r = request.get_json()
     try:
-        message_to_write = Message(message_id=r["message_id"], author=r["author"], text=r["text"])
+        message_to_write = Message(user_id=r["user_id"], thread_id=r["thread_name"], message_text=r["text"])
         print("Successful object creation")
         db.session.add(message_to_write)
         print("Successful session add")
