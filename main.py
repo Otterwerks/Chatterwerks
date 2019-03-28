@@ -7,7 +7,7 @@ from psql_info import psql_uri
 
 app = Flask(__name__, static_url_path='/build')
 app.config['SQLALCHEMY_DATABASE_URI'] = psql_uri
-app.config['SQLALCHEMY_ECHO'] = True
+#app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -49,11 +49,18 @@ class Subscription(db.Model):
         return '<Subscription_ID %r>' % self.subscription_id
 
 def Get_User_ID(name, password):
-    user_query = User.query.filter_by(user_name=name, user_password=password).first()
+    user_query = User.query.filter_by(user_name = name, user_password = password).first()
     if user_query is None:
         return "id_not_found"
     else:
         return user_query.user_id
+
+def Get_Subscription_ID(user, thread):
+    subscription_query = Subscription.query.filter_by(user_id = user, thread_id = thread).first()
+    if subscription_query is None:
+        return "id_not_found"
+    else:
+        return subscription_query.subscription_id
         
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -65,6 +72,7 @@ def static_site(path):
 
 @app.route('/api/v1/users/register', methods=['POST'])
 def register_user():
+    # request body {"user_name": <username>, "user_password": <password>}
     print(request.get_json())
     r = request.get_json()
     try:
@@ -76,6 +84,9 @@ def register_user():
             print("Successful session add")
             db.session.commit()
             print("Successful session commit")
+            default_subscription = Subscription(user_id = Get_User_ID(r['user_name'], r['user_password']), thread_id = 1)
+            db.session.add(default_subscription)
+            db.session.commit()
             return jsonify({"success": "true"})
         else:
             return jsonify({"success": "username_taken"})
@@ -83,13 +94,42 @@ def register_user():
         return jsonify({"success": "false"})
 
 @app.route('/api/v1/messages/query', methods=['POST'])
+def api_message_query():
+    # request body {"user_name": <username>, "user_password": <password>, "thread_id": <current thread id>}
+    # receive user name, user password, and thread id - check if user exists, if user subscribed, then return messages sorted oldest first
+    print(request.get_json())
+    r=request.get_json()
+    try:
+        user_id = Get_User_ID(r['user_name'], r['user_password'])
+        thread_id = r['thread_id']
+        print(user_id)
+        print(thread_id)
+        if user_id == "id_not_found":
+            return redirect("/login", code=302)
+        if Get_Subscription_ID(user_id, r['thread_id']) == "id_not_found":
+            thread_id = 1
+        message_query = Message.query.filter_by(thread_id = thread_id).limit(100).all()
+        print(message_query)
+        print(message_query[1].message_timestamp)
+        chat_messages = []
+        for message in message_query:
+            chat_messages.append({"message_id": message.message_id, "user_id": message.user_id, "message_text": message.message_text, "message_timestamp": message.message_timestamp})
+        print(chat_messages)
+        return jsonify({"thread_id": thread_id, "messages": chat_messages})
+    except:
+        return jsonify({"success": "false"})
+
 
 @app.route('/api/v1/messages/submit', methods=['POST'])
 def api_submit():
+    # request body {"user_name": <username>, "user_password": <password>, "thread_id": <current thread id>, "message_text": <message>}
     print(request.get_json())
     r = request.get_json()
     try:
-        message_to_write = Message(user_id=r['user_id'], thread_id=r['thread_id'], message_text=r['text'], message_timestamp = time.time())
+        user_id = Get_User_ID(r['user_name'], r['user_password'])
+        if user_id == "id_not_found":
+            return redirect("/login", code=302)
+        message_to_write = Message(user_id=user_id, thread_id=r['thread_id'], message_text=r['text'], message_timestamp = time.time())
         print("Successful object creation")
         db.session.add(message_to_write)
         print("Successful session add")
