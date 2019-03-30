@@ -5,7 +5,7 @@ const messages = (state = [], action) => {
           ...state,
           {
             message_id: action.id,
-            author: action.author,
+            author: action.user_name,
             text: action.text,
           }
         ]

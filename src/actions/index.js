@@ -1,11 +1,11 @@
 let userId = 0;
-let messageId = () => Date.now() + userId;
 let currentUser = 'Sam';
+let current_thread = 1;
 
 export const submitMessage = text => ({
   type: 'SUBMIT_MESSAGE',
-  message_id: messageId(),
-  author: currentUser,
-  text: text
+  user_name: currentUser,
+  text: text, 
+  thread_id: current_thread
 })
 

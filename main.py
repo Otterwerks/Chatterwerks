@@ -105,7 +105,7 @@ def api_message_query():
         message_query = Message.query.filter_by(thread_id = thread_id).limit(100).all()
         chat_messages = []
         for message in message_query:
-            chat_messages.append({"message_id": message.message_id, "user_id": message.user_id, "message_text": message.message_text, "message_timestamp": message.message_timestamp})
+            chat_messages.append({"message_id": message.message_id, "user_name": User.query.filter_by(user_id = message.user_id).first().user_name, "message_text": message.message_text, "message_timestamp": message.message_timestamp})
         return jsonify({"thread_id": thread_id, "messages": chat_messages})
     except:
         return jsonify({"response": "failed"})

@@ -23,7 +23,14 @@ const logger = store => next => action => {
   return result
 }
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+const initialState = {
+  messages: [],
+  user_name: "",
+  user_password: "",
+  current_thread: 1,
+}
+
+const store = createStore(rootReducer, initialState, applyMiddleware(logger));
 
 ReactDOM.render(<App store={store} />, document.getElementById('root'));
 
