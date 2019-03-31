@@ -13,4 +13,4 @@ const user = (state = {user_name: "", user_password: ""}, action) => {
     }
   }
   
-  export default messages
+  export default user

@@ -5,6 +5,12 @@ _A chat that works_
 
 Heroku link coming soon!
 
+<br>
+
+<p><img src="icons/react.svg" width="50">&nbsp&nbsp&nbsp&nbsp<img src="icons/react-router.svg" width="50">&nbsp&nbsp&nbsp&nbsp<img src="icons/flask.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/postgresql.svg" width="50">&nbsp&nbsp<img src="icons/gunicorn.svg" width="80">&nbsp&nbsp&nbsp&nbsp<img src="icons/heroku.svg" width="30">&nbsp&nbsp&nbsp&nbsp<img src="icons/postman.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/python.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/javascript.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/html-5.svg" width="35">&nbsp&nbsp&nbsp&nbsp<img src="icons/css-3.svg" width="35"></p>
+
+<br>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Summary

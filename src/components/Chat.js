@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import SubmitMessage from '../containers/SubmitMessage';
 import UserList from './UserList';
 import MessageList from '../containers/MessageList';
+import SubmitMessage from './SubmitMessage';
 
 const Chat = () => (
     <div className="row">
@@ -16,7 +16,7 @@ const Chat = () => (
             </div>
             <div className="row">
                 <div className="col">
-                    <SubmitMessage />
+                    <SubmitMessage store={this.props.store}/>
                 </div>
             </div>
         </div>

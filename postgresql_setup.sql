@@ -1,6 +1,6 @@
 -- These commands will configure a PostgreSQL database to work with Chatterwerks
 
-CREATE TABLE "Users" (
+CREATE TABLE "User" (
 "user_id"  SERIAL NOT NULL ,
 "user_name" VARCHAR NOT NULL ,
 "user_password" TEXT NOT NULL ,
@@ -9,7 +9,7 @@ CREATE TABLE "Users" (
 PRIMARY KEY ("user_id")
 );
 
-CREATE TABLE "Threads" (
+CREATE TABLE "Thread" (
 "thread_id"  SERIAL NOT NULL ,
 "thread_name" VARCHAR NOT NULL ,
 "thread_description" TEXT NOT NULL ,
@@ -17,7 +17,7 @@ CREATE TABLE "Threads" (
 PRIMARY KEY ("thread_id")
 );
 
-CREATE TABLE "Messages" (
+CREATE TABLE "Message" (
 "message_id"  SERIAL NOT NULL ,
 "user_id" SMALLINT NOT NULL ,
 "thread_id" SMALLINT NOT NULL ,
@@ -26,7 +26,7 @@ CREATE TABLE "Messages" (
 PRIMARY KEY ("message_id")
 );
 
-CREATE TABLE "Subscriptions" (
+CREATE TABLE "Subscription" (
 "subscription_id"  SERIAL NOT NULL ,
 "user_id" SMALLINT NOT NULL ,
 "thread_id" SMALLINT NOT NULL ,

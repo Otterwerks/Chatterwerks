@@ -25,8 +25,8 @@ const logger = store => next => action => {
 
 const initialState = {
   messages: [],
-  user_name: "",
-  user_password: "",
+  user_name: "sam",
+  user_password: "mypassword",
   current_thread: 1,
 }
 
