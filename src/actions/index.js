@@ -1,7 +1,7 @@
 
-export const displayMessages = ({ messages }) => ({
-    type: 'DISPLAY_MESSAGES',
-    messages
+export const setMessages = (messages) => ({
+    type: 'SET_MESSAGES',
+    thread_messages: messages
 });
 
 export const setSubmissionStatus = (status) => ({

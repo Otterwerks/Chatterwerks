@@ -2,9 +2,27 @@ import React, { Component } from 'react';
 import UserList from './UserList';
 import MessageList from '../containers/MessageListContainer';
 import SubmitMessage from '../containers/SubmitMessageContainer';
+import Axios from 'axios';
 
-const Chat = () => (
+
+const Chat = ({ user, updateMessages }) => (
     <div className="row">
+        {setInterval(function () {
+            Axios.post('api/v1/messages/query', {
+                user_name: user.userName,
+                user_password: user.userPassword,
+                thread_id: user.currentThread
+            }).then((res) => {
+                if (res.data.response == 'success') {
+                updateMessages(res.data.messages)
+                }
+                console.log(res);
+            })
+            .catch(function (err) {
+                console.log(err);
+            })
+            }, 5000)
+        }
         <div className="col-3">
             <UserList />
         </div>

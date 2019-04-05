@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Header from './Header';
 import Home from './Home';
-import Chat from './Chat';
+import Chat from '../containers/ChatContainer';
 
 const App = ({ store }) => (
   <Provider store={store}>

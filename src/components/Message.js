@@ -1,10 +1,10 @@
 import React from 'react';
 
-let currentUser = '';
+const currentUser = ''
 
-const Message = ({ user_name, text }) => (
+const Message = ({ user_name, message_text }) => (
   <p className={user_name == currentUser ? 'message-sent' : 'message-received'}>
-    {user_name}: {text}
+    {user_name}: {message_text}
   </p>
 )
 

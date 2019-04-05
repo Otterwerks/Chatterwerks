@@ -10,10 +10,10 @@ const messageReducer = (state = messageReducerDefaultState, action) => {
           ...state,
           submissionStatus: action.submissionStatus
         }
-      case 'DISPLAY_MESSAGES':
+      case 'SET_MESSAGES':
         return {
           ...state,
-          thread_messages: action.messages
+          thread_messages: action.thread_messages
         }
       default:
         return state

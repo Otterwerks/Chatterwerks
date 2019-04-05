@@ -9,4 +9,4 @@ const MessageList = ({ messages }) => (
   </div>
 )
 
-export default MessageList
+export default MessageList;
