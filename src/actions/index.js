@@ -1,6 +1,11 @@
-let userId = 0;
-let currentUser = 'Sam';
-let current_thread = 1;
 
+export const displayMessages = ({ messages }) => ({
+    type: 'DISPLAY_MESSAGES',
+    messages
+});
 
+export const setSubmissionStatus = (status) => ({
+    type: 'SET_SUBMISSION_STATUS',
+    submissionStatus: status
+});
 

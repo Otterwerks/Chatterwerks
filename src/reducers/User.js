@@ -1,4 +1,4 @@
-const user = (state = {user_name: "", user_password: ""}, action) => {
+const userReducer = (state = {user_name: "", user_password: ""}, action) => {
     switch (action.type) {
       case 'SET_USER':
         return [
@@ -13,4 +13,4 @@ const user = (state = {user_name: "", user_password: ""}, action) => {
     }
   }
   
-  export default user
+  export default userReducer

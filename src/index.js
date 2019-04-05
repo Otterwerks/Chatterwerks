@@ -24,10 +24,16 @@ const logger = store => next => action => {
 }
 
 const initialState = {
-  messages: [],
-  user_name: "sam",
-  user_password: "mypassword",
-  current_thread: 1,
+  message: {
+    submisstionStatus: "",
+    thread_messages: []
+  },
+  user: {
+    isLoggedIn: true,
+    userName: "sam",
+    userPassword: "mypassword",
+    currentThread: 1,
+  }
 }
 
 const store = createStore(rootReducer, initialState, applyMiddleware(logger));

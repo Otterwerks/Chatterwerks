@@ -2,7 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const SubmitMessage = () => {
+const SubmitMessage = ({ user, updateSubmissionStatus}) => {
   let input;
 
   return (
@@ -12,10 +12,11 @@ const SubmitMessage = () => {
         if (!input.value.trim()) {
           return
         }
+        updateSubmissionStatus('SUBMITTED');
         axios.post('api/v1/messages/submit', {
-          user_name: this.props.store.getState().user_name,
-          user_password: this.props.store.getState().user_password,
-          thread_id: this.props.store.getState().current_thread,
+          user_name: user.userName,
+          user_password: user.userPassword,
+          thread_id: user.currentThread,
           message_text: input
         })
         .then((res) => {
