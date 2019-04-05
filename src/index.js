@@ -25,7 +25,7 @@ const logger = store => next => action => {
 
 const initialState = {
   message: {
-    submisstionStatus: "",
+    submissionStatus: "",
     thread_messages: []
   },
   user: {

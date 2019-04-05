@@ -118,9 +118,12 @@ def api_submit():
     r = request.get_json()
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
+        print(user_id)
         if user_id == "id_not_found":
+            print("id not found, redirecting")
             return redirect("/login", code=302)
         message_to_write = Message(user_id=user_id, thread_id=r['thread_id'], message_text=r['text'], message_timestamp = time.time())
+        print(message_to_write)
         db.session.add(message_to_write)
         db.session.commit()
         return jsonify({"response": "success"})

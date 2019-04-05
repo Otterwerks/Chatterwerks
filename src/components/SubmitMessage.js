@@ -17,9 +17,14 @@ const SubmitMessage = ({ user, updateSubmissionStatus}) => {
           user_name: user.userName,
           user_password: user.userPassword,
           thread_id: user.currentThread,
-          message_text: input
+          text: input.value
         })
         .then((res) => {
+          if (res.data.response == 'success') {
+            updateSubmissionStatus('DONE')
+          } else {
+            updateSubmissionStatus('FAILED')
+          }
           console.log(res);
         })
         .catch(function (err) {
