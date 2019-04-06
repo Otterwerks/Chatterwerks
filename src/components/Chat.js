@@ -8,7 +8,7 @@ import Axios from 'axios';
 const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages }) => (
     <div>
         <div className="hidden">
-            {setInterval(function () {
+            {setTimeout(function () {
                 if (queryStatus == 'COMPLETE') {
                     updateQueryStatus('REQUESTED')
                     Axios.post('api/v1/messages/query', {
@@ -25,8 +25,6 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages }) => (
                     .catch(function (err) {
                         console.log(err);
                     })
-                } else {
-                    return
                 }
                 }, 5000)
             }
