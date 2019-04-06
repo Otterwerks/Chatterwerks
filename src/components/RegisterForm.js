@@ -4,27 +4,37 @@ import axios from 'axios';
 const RegisterForm = ({ setSuccess, setErrorMessage }) => {
     let name;
     let pass;
+    let pass1;
+    let pass2;
   
     return (
       <div>
         <form onSubmit={e => {
           e.preventDefault()
-          if (!name.value.trim() || !pass.value.trim()) {
+          if (!name.value.trim() || !pass1.value.trim()) {
+            return
+          }
+          if (pass1.value != pass2.value) {
+            pass1.value = ''
+            pass2.value = ''
+            setErrorMessage("Password does not match, try again")
             return
           }
           axios.post('api/v1/users/register', {
             user_name: name.value,
-            user_password: pass.value,
+            user_password: pass1.value,
           })
           .then((res) => {
             if (res.data.response == 'success') {
               setSuccess(true)
               return
             } else if (res.data.response == 'username_taken') {
-                pass.value = ''
+                pass1.value = ''
+                pass2.value = ''
                 setErrorMessage("Username already taken, please choose a different name.")
             } else {
-                pass.value = ''
+                pass1.value = ''
+                pass2.value = ''
                 setErrorMessage("Server error, please try again. Please contact system administrator if this problem persists.")
             }
             console.log(res);
@@ -35,7 +45,8 @@ const RegisterForm = ({ setSuccess, setErrorMessage }) => {
         }}>
         <div>
           <row><div className="col"><h3>Username: <input ref={node => name = node} /></h3></div></row>
-          <row><div className="col"><h3>Password: <input type="password" ref={node => pass = node} /></h3></div></row>
+          <row><div className="col"><h3>Password: <input type="password" ref={node => pass1 = node} /></h3></div></row>
+          <row><div className="col"><h3>Confirm Password: <input type="password" ref={node => pass2 = node} /></h3></div></row>
           <row><div className="col"><button type="submit">Register</button></div></row>
         </div>
         </form>
