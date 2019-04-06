@@ -7,3 +7,7 @@
   visibility: hidden;
   display: none;
 }
+
+.message-sent {
+  text-align: right;
+}
