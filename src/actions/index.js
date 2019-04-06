@@ -9,3 +9,22 @@ export const setSubmissionStatus = (status) => ({
     submissionStatus: status
 });
 
+export const setQueryStatus = (status) => ({
+    type: 'SET_QUERY_STATUS',
+    queryStatus: status
+});
+
+const defaultUserObject = {
+    userName: "",
+    userPassword: "",
+    currentThread: 1,
+    isLoggedIn: false
+}
+
+export const setUser = (user = defaultUserObject) => ({
+    type: 'SET_USER',
+    userName: user.userName,
+    userPassword: user.userPassword,
+    currentThread: user.currentThread,
+    isLoggedIn: user.isLoggedIn
+});

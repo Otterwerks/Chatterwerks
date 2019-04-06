@@ -70,8 +70,22 @@ def static_site(path):
     else:
         return send_from_directory('build', 'index.html')
 
+@app.route("/api/v1/users/login", methods=['POST'])
+def api_login_user():
+    # request body {"user_name": <username>, "user_password": <password>}
+    print(request.get_json())
+    r = request.get_json()
+    try:
+        check_login = Get_User_ID(r['user_name'], r['user_password'])
+        if check_login == "id_not_found":
+            return jsonify({"response": "incorrect"})
+        else:
+            return jsonify({"response": "success"})
+    except:
+        return jsonify({"response": "failed"})
+
 @app.route('/api/v1/users/register', methods=['POST'])
-def register_user():
+def api_register_user():
     # request body {"user_name": <username>, "user_password": <password>}
     print(request.get_json())
     r = request.get_json()
@@ -112,18 +126,15 @@ def api_message_query():
 
 
 @app.route('/api/v1/messages/submit', methods=['POST'])
-def api_submit():
+def api_submit_message():
     # request body {"user_name": <username>, "user_password": <password>, "thread_id": <current thread id>, "message_text": <message>}
     print(request.get_json())
     r = request.get_json()
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
-        print(user_id)
         if user_id == "id_not_found":
-            print("id not found, redirecting")
             return redirect("/login", code=302)
         message_to_write = Message(user_id=user_id, thread_id=r['thread_id'], message_text=r['text'], message_timestamp = time.time())
-        print(message_to_write)
         db.session.add(message_to_write)
         db.session.commit()
         return jsonify({"response": "success"})

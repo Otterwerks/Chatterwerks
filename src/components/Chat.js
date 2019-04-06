@@ -5,23 +5,29 @@ import SubmitMessage from '../containers/SubmitMessageContainer';
 import Axios from 'axios';
 
 
-const Chat = ({ user, updateMessages }) => (
+const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages }) => (
     <div>
         <div className="hidden">
             {setInterval(function () {
-                Axios.post('api/v1/messages/query', {
-                    user_name: user.userName,
-                    user_password: user.userPassword,
-                    thread_id: user.currentThread
-                }).then((res) => {
-                    if (res.data.response == 'success') {
-                    updateMessages(res.data.messages)
-                    }
-                    console.log(res);
-                })
-                .catch(function (err) {
-                    console.log(err);
-                })
+                if (queryStatus == 'COMPLETE') {
+                    updateQueryStatus('REQUESTED')
+                    Axios.post('api/v1/messages/query', {
+                        user_name: user.userName,
+                        user_password: user.userPassword,
+                        thread_id: user.currentThread
+                    }).then((res) => {
+                        if (res.data.response == 'success') {
+                        updateQueryStatus('COMPLETE');
+                        updateMessages(res.data.messages);
+                        }
+                        console.log(res);
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                    })
+                } else {
+                    return
+                }
                 }, 5000)
             }
         </div>

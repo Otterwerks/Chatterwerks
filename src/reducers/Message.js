@@ -1,5 +1,6 @@
 const messageReducerDefaultState = {
   submissionStatus: "",
+  queryStatus: "",
   thread_messages: []
 };
 
@@ -9,6 +10,11 @@ const messageReducer = (state = messageReducerDefaultState, action) => {
         return {
           ...state,
           submissionStatus: action.submissionStatus
+        }
+      case 'SET_QUERY_STATUS':
+        return {
+          ...state,
+          queryStatus: action.queryStatus
         }
       case 'SET_MESSAGES':
         return {

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Header from './Header';
 import Home from './Home';
+import Login from './Login';
 import Chat from '../containers/ChatContainer';
 
 const App = ({ store }) => (
@@ -12,6 +13,7 @@ const App = ({ store }) => (
     <Router>
       <Route path="/" component={Header} />
       <Route exact path="/" component={Home} />
+      <Route exact path="/login" component={Login} />
       <Route path="/chat" component={Chat} />
     </Router>
     </div>

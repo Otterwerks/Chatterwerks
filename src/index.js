@@ -26,6 +26,7 @@ const logger = store => next => action => {
 const initialState = {
   message: {
     submissionStatus: "",
+    queryStatus: "COMPLETE",
     thread_messages: []
   },
   user: {

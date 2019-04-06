@@ -1,13 +1,20 @@
-const userReducer = (state = {user_name: "", user_password: ""}, action) => {
+const userReducerDefaultState = {
+  userName: "",
+  userPassword: "",
+  currentThread: 1,
+  isLoggedIn: false
+};
+
+const userReducer = (state = userReducerDefaultState, action) => {
     switch (action.type) {
       case 'SET_USER':
-        return [
-          {
-            user_name: action.user_name,
-            user_password: action.user_password,
-            current_thread: action.current_thread,
-          }
-        ]
+        return {
+          ...state,
+          userName: action.userName,
+          userPassword: action.userPassword,
+          currentThread: action.currentThread,
+          isLoggedIn: action.isLoggedIn
+        }
       default:
         return state
     }
