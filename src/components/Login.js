@@ -11,10 +11,15 @@ class Login extends Component {
             errorMessage: ""
         }
         this.setRedirect = this.setRedirect.bind(this);
+        this.setError = this.setError.bind(this);
     }
 
     setRedirect(redirect) {
         this.setState({redirect: redirect})
+    }
+
+    setError(message) {
+        this.setState({showError: true, errorMessage: message})
     }
 
     render() {

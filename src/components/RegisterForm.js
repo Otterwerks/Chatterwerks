@@ -3,12 +3,13 @@ import axios from 'axios';
 
 const RegisterForm = ({ setSuccess, setErrorMessage }) => {
     let name;
-    let pass;
     let pass1;
     let pass2;
   
     return (
       <div>
+      <h2>DISCLAIMER: PLEASE USE A THROWAWAY PASSWORD</h2>
+      <h3>I have done my best to secure the database of this project but the source code is publicly available so please do not use a real password that you commonly use for other accounts.</h3>
         <form onSubmit={e => {
           e.preventDefault()
           if (!name.value.trim() || !pass1.value.trim()) {
@@ -29,12 +30,8 @@ const RegisterForm = ({ setSuccess, setErrorMessage }) => {
               setSuccess(true)
               return
             } else if (res.data.response == 'username_taken') {
-                pass1.value = ''
-                pass2.value = ''
                 setErrorMessage("Username already taken, please choose a different name.")
             } else {
-                pass1.value = ''
-                pass2.value = ''
                 setErrorMessage("Server error, please try again. Please contact system administrator if this problem persists.")
             }
             console.log(res);

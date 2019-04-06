@@ -26,10 +26,6 @@ const LoginForm = ({ updateUser, setRedirect }) => {
               })
               setRedirect(true)
               return
-            } else if (res.data.response == 'incorrect') {
-                pass.value = ''
-            } else {
-                pass.value = ''
             }
             console.log(res);
           })
