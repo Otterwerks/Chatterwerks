@@ -2,3 +2,8 @@
   height: 70vh;
   overflow-y: auto;
 }
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
