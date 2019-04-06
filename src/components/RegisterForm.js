@@ -33,11 +33,11 @@ const RegisterForm = ({ setSuccess, setErrorMessage }) => {
             console.log(err);
           })
         }}>
-          <input ref={node => name = node} />
-          <input ref={node => pass = node} />
-          <button type="submit">
-            Login
-          </button>
+        <div>
+          <row><div className="col"><h3>Username: <input ref={node => name = node} /></h3></div></row>
+          <row><div className="col"><h3>Password: <input type="password" ref={node => pass = node} /></h3></div></row>
+          <row><div className="col"><button type="submit">Register</button></div></row>
+        </div>
         </form>
       </div>
     )

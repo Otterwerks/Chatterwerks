@@ -18,7 +18,11 @@ class Login extends Component {
     }
 
     render() {
-        return this.state.redirect ? <Redirect to='/chat' /> : <LoginForm setRedirect={this.setRedirect}/>
+        return (
+            <div>
+                {this.state.redirect ? <Redirect to='/chat' /> : <LoginForm setRedirect={this.setRedirect}/>}
+            </div>
+        )
     }
 }
 
