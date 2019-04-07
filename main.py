@@ -51,14 +51,21 @@ class Subscription(db.Model):
         return '<Subscription_ID %r>' % self.subscription_id
 
 def Get_User_ID(name, password):
-    user_query = User.query.filter_by(user_name = name, user_password = password).first()
+    user_query = User.query.filter_by(user_name=name, user_password=password).first()
     if user_query is None:
         return "id_not_found"
     else:
         return user_query.user_id
 
+def Get_Thread_ID(thread_name):
+    thread_query = Thread.query.filter_by(thread_name=thread_name).first()
+    if thread_query is None:
+        return "id_not_found"
+    else:
+        return thread_query.thread_id
+
 def Get_Subscription_ID(user, thread):
-    subscription_query = Subscription.query.filter_by(user_id = user, thread_id = thread).first()
+    subscription_query = Subscription.query.filter_by(user_id=user, thread_id=thread).first()
     if subscription_query is None:
         return "id_not_found"
     else:
@@ -97,15 +104,15 @@ def api_register_user():
     print(request.get_json())
     r = request.get_json()
     try:
-        user_exists = User.query.filter_by(user_name = r['user_name']).first()
+        user_exists = User.query.filter_by(user_name=r['user_name']).first()
         if user_exists is None:
-            user_to_register = User(user_name=r['user_name'], user_password=r['user_password'], registered_on = time.time())
+            user_to_register = User(user_name=r['user_name'], user_password=r['user_password'], registered_on=time.time())
             db.session.add(user_to_register)
             db.session.commit()
-            default_subscription = Subscription(user_id = Get_User_ID(r['user_name'], r['user_password']), thread_id = 1)
+            default_subscription = Subscription(user_id=Get_User_ID(r['user_name'], r['user_password']), thread_id=1)
             db.session.add(default_subscription)
             db.session.commit()
-            otter_welcome = Message(user_id = -1, thread_id = 1, message_text = "Welcome to the chat, " + r['user_name'])
+            otter_welcome = Message(user_id=-1, thread_id=1, message_text="Welcome to the chat, " + r['user_name'])
             db.session.add(otter_welcome)
             db.session.commit()
             return jsonify({"response": "success"})
@@ -116,45 +123,46 @@ def api_register_user():
 
 @app.route('/api/v1/messages/query', methods=['POST'])
 def api_message_query():
-    # request body {"user_name": <username>, "user_password": <password>, "thread_id": <current thread id>}
+    # request body {"user_name": <username>, "user_password": <password>, "thread_name": <current thread name>}
     print(request.get_json())
     r=request.get_json()
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
-        thread_id = r['thread_id']
-        if user_id == "id_not_found":
+        thread_id = Get_Thread_ID(r['thread_name'])
+        if user_id == "id_not_found" or thread_id == "id_not_found":
             return redirect("/login", code=302)
-        if Get_Subscription_ID(user_id, r['thread_id']) == "id_not_found":
+        if Get_Subscription_ID(user_id, thread_id) == "id_not_found":
             thread_id = 1
-        message_query = Message.query.filter_by(thread_id = thread_id).limit(100).all()
-        users_query = Subscription.query.filter_by(thread_id = thread_id).all()
+        message_query = Message.query.filter_by(thread_id=thread_id).limit(100).all()
+        users_query = Subscription.query.filter_by(thread_id=thread_id).all()
         chat_messages = []
         for message in message_query:
-            chat_messages.append({"message_id": message.message_id, "user_name": User.query.filter_by(user_id = message.user_id).first().user_name, "message_text": message.message_text, "message_timestamp": message.message_timestamp})
+            chat_messages.append({"message_id": message.message_id, "user_name": User.query.filter_by(user_id=message.user_id).first().user_name, "message_text": message.message_text, "message_timestamp": message.message_timestamp})
         subscribed_users = []
         for user in users_query:
-            subscribed_users.append(User.query.filter_by(user_id = user.user_id).first().user_name)
-        return jsonify({"response": "success", "thread_id": thread_id, "subscribed_users": subscribed_users, "messages": chat_messages})
+            subscribed_users.append(User.query.filter_by(user_id=user.user_id).first().user_name)
+        return jsonify({"response": "success", "thread_name": Thread.query.filter_by(thread_id=thread_id).first().thread_name, "subscribed_users": subscribed_users, "messages": chat_messages})
     except:
         return jsonify({"response": "failed"})
 
 
 @app.route('/api/v1/messages/submit', methods=['POST'])
 def api_submit_message():
-    # request body {"user_name": <username>, "user_password": <password>, "thread_id": <current thread id>, "message_text": <message>}
+    # request body {"user_name": <username>, "user_password": <password>, "thread_name": <current thread name>, "message_text": <message>}
     print(request.get_json())
     r = request.get_json()
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
-        if user_id == "id_not_found":
+        thread_id = Get_Thread_ID(r['thread_name'])
+        if user_id == "id_not_found" or thread_id == "id_not_found":
             return redirect("/login", code=302)
-        message_to_write = Message(user_id=user_id, thread_id=r['thread_id'], message_text=r['text'], message_timestamp = time.time())
+        message_to_write = Message(user_id=user_id, thread_id=thread_id, message_text=r['text'], message_timestamp=time.time())
         db.session.add(message_to_write)
         db.session.commit()
-        if r['thread_id'] == 1:
+        if thread_id == 1:
             otter_listen = Otter(r['text']).interpret()
             if otter_listen is not None:
-                otter_answer = Message(user_id=-1, thread_id=1, message_text=otter_listen, message_timestamp = time.time())
+                otter_answer = Message(user_id=-1, thread_id=1, message_text=otter_listen, message_timestamp=time.time())
                 db.session.add(otter_answer)
                 db.session.commit()
 
@@ -175,7 +183,7 @@ def api_new_thread():
             new_thread = Thread(thread_name=r['thread_name'], thread_description=r['thread_description'], thread_moderator=user_id)
             db.session.add(new_thread)
             db.session.commit()
-            thread_id = Thread.query.filter_by(thread_name=r['thread_name']).first().thread_id
+            thread_id = Get_Thread_ID(r['thread_name'])
             Create_Subscription(user_id, thread_id)
             for user in r['initial_subscriptions']:
                 user_id_to_subscribe = User.query.filter_by(user_name=user).first().user_id
@@ -188,12 +196,12 @@ def api_new_thread():
 
 @app.route('/api/v1/threads/subscribe', methods=['POST'])
 def api_new_subscription():
-    #request body {"user_name": <username>, "user_password": <password>, "thread_to_subscribe": <threadid>, "user_to_subscribe": <username>}
+    #request body {"user_name": <username>, "user_password": <password>, "thread_to_subscribe": <threadname>, "user_to_subscribe": <username>}
     print(request.get_json())
     r = request.get_json()
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
-        thread_id = r['thread_to_subscribe']
+        thread_id = Get_Thread_ID(r['thread_to_subscribe'])
         id_to_subscribe = User.query.filter_by(user_name=r['user_to_subscribe']).first().user_id
         if user_id == "id_not_found" or id_to_subscribe == None or thread_id == None:
             return jsonify({"response": "query error"})

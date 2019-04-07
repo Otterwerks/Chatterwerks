@@ -1,7 +1,7 @@
 const userReducerDefaultState = {
   userName: "",
   userPassword: "",
-  currentThread: 1,
+  currentThread: "Home",
   isLoggedIn: false
 };
 

@@ -17,7 +17,7 @@ export const setQueryStatus = (status) => ({
 const defaultUserObject = {
     userName: "",
     userPassword: "",
-    currentThread: 1,
+    currentThread: "Home",
     isLoggedIn: false
 }
 

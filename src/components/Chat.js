@@ -15,7 +15,7 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubs
                     Axios.post('api/v1/messages/query', {
                         user_name: user.userName,
                         user_password: user.userPassword,
-                        thread_id: user.currentThread
+                        thread_name: user.currentThread
                     }).then((res) => {
                         if (res.data.response == 'success') {
                         updateQueryStatus('COMPLETE');

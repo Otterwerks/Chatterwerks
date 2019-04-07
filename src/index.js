@@ -34,7 +34,7 @@ const initialState = {
     isLoggedIn: false,
     userName: "",
     userPassword: "",
-    currentThread: 1,
+    currentThread: "Home",
   }
 }
 

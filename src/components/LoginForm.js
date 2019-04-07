@@ -22,7 +22,7 @@ const LoginForm = ({ updateUser, setRedirect }) => {
                   userName: name.value,
                   userPassword: pass.value,
                   isLoggedIn: true,
-                  currentThread: 1
+                  currentThread: "Home"
               })
               setRedirect(true)
               return
