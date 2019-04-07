@@ -3,18 +3,23 @@
 
 _A chat that works_
 
-Heroku link coming soon!
+Heroku Links:
+
+Heroku live/production <a href="https://otterwerks-chat-app.herokuapp.com"></a>
+
+Heroku development/staging <a href="https://otterwerks-chat-staging.herokuapp.com"></a>
+
 
 <br>
 
-<p><img src="icons/react.svg" width="80">&nbsp&nbsp&nbsp&nbsp<img src="icons/react-router.svg" width="50">&nbsp&nbsp&nbsp&nbsp<img src="icons/flask.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/postgresql.svg" width="50">&nbsp&nbsp<img src="icons/gunicorn.svg" width="80">&nbsp&nbsp&nbsp&nbsp<img src="icons/heroku.svg" width="30">&nbsp&nbsp&nbsp&nbsp<img src="icons/postman.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/python.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/javascript.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/html-5.svg" width="35">&nbsp&nbsp&nbsp&nbsp<img src="icons/css-3.svg" width="35"></p>
+<p><img src="icons/react.svg" width="50">&nbsp&nbsp&nbsp&nbsp<img src="icons/react-router.svg" width="80">&nbsp&nbsp&nbsp&nbsp<img src="icons/flask.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/postgresql.svg" width="50">&nbsp&nbsp<img src="icons/gunicorn.svg" width="80">&nbsp&nbsp&nbsp&nbsp<img src="icons/heroku.svg" width="30">&nbsp&nbsp&nbsp&nbsp<img src="icons/postman.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/python.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/javascript.svg" width="40">&nbsp&nbsp&nbsp&nbsp<img src="icons/html-5.svg" width="35">&nbsp&nbsp&nbsp&nbsp<img src="icons/css-3.svg" width="35"></p>
 
 <br>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Summary
-Chatterwerks is a simple chat application that focuses on utilizing a PostgreSQL relational database to keep track of users, channels, and messages. 
+Chatterwerks is a simple chat application that focuses on utilizing a PostgreSQL relational database to keep track of users, channels, channel subscriptions, and messages.
 
 ## Resources Used:
 - <a href="https://redux.js.org/basics/example">Redux JS To-Do Example</a>
