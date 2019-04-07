@@ -175,10 +175,32 @@ def api_new_thread():
             new_thread = Thread(thread_name=r['thread_name'], thread_description=r['thread_description'], thread_moderator=user_id)
             db.session.add(new_thread)
             db.session.commit()
-            Create_Subscription(user_id, Thread.query.filter_by(thread_name=r['thread_name']).first().thread_id)
+            thread_id = Thread.query.filter_by(thread_name=r['thread_name']).first().thread_id
+            Create_Subscription(user_id, thread_id)
+            for user in r['initial_subscriptions']:
+                user_id_to_subscribe = User.query.filter_by(user_name=user).first().user_id
+                Create_Subscription(user_id_to_subscribe, thread_id)
             return jsonify({"response": "success"})
         else:
             return jsonify({"response": "exists"})
+    except:
+        return jsonify({"response": "failed"})
+
+@app.route('/api/v1/threads/subscribe', methods=['POST'])
+def api_new_subscription():
+    #request body {"user_name": <username>, "user_password": <password>, "thread_to_subscribe": <threadid>, "user_to_subscribe": <username>}
+    print(request.get_json())
+    r = request.get_json()
+    try:
+        user_id = Get_User_ID(r['user_name'], r['user_password'])
+        thread_id = r['thread_to_subscribe']
+        id_to_subscribe = User.query.filter_by(user_name=r['user_to_subscribe']).first().user_id
+        if user_id == "id_not_found" or id_to_subscribe == None or thread_id == None:
+            return jsonify({"response": "query error"})
+        if user_id != Thread.query.filter_by(thread_id=thread_id).first().thread_moderator:
+            return jsonify({"response": "permission denied"})
+        Create_Subscription(id_to_subscribe, thread_id)
+        return jsonify({"response": "success"})
     except:
         return jsonify({"response": "failed"})
 
