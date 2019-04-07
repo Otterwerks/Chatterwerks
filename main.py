@@ -63,6 +63,11 @@ def Get_Subscription_ID(user, thread):
         return "id_not_found"
     else:
         return subscription_query.subscription_id
+
+def Create_Subscription(user_id, thread_id):
+    new_subscription = Subscription(user_id=user_id, thread_id=thread_id)
+    db.session.add(new_subscription)
+    db.session.commit()
         
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -156,6 +161,27 @@ def api_submit_message():
         return jsonify({"response": "success"})
     except:
         return jsonify({"response": "failed"})
+
+@app.route('/api/v1/threads/new', methods=['POST'])
+def api_new_thread():
+    #request body {"user_name": <username>, "user_password": <password>, "thread_name": <name>, "thread_description": <description>, "initial_subscriptions": <[username list]>}
+    print(request.get_json())
+    r = request.get_json()
+    try:
+        user_id = Get_User_ID(r['user_name'], r['user_password'])
+        if user_id == "id_not_found":
+            return redirect("/login", code=302)
+        if Thread.query.filter_by(thread_name=r['thread_name']).first() is None:
+            new_thread = Thread(thread_name=r['thread_name'], thread_description=r['thread_description'], thread_moderator=user_id)
+            db.session.add(new_thread)
+            db.session.commit()
+            Create_Subscription(user_id, Thread.query.filter_by(thread_name=r['thread_name']).first().thread_id)
+            return jsonify({"response": "success"})
+        else:
+            return jsonify({"response": "exists"})
+    except:
+        return jsonify({"response": "failed"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="443")
