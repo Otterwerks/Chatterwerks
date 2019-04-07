@@ -28,13 +28,15 @@ const initialState = {
     submissionStatus: "",
     queryStatus: "COMPLETE",
     thread_messages: [],
-    subscribedUsers: []
+    subscribedUsers: [],
+    userIsModerator: false
   },
   user: {
     isLoggedIn: false,
     userName: "",
     userPassword: "",
     currentThread: "Home",
+    availableThreads: [],
   }
 }
 

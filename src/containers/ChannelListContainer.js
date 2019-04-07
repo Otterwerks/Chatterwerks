@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import ChannelList from '../components/ChannelList'
 
 const mapStateToProps = state => ({
-    users: state.message.subscribedUsers,
+    threads: state.user.availableThreads,
 })
 
 export default connect(

@@ -4,7 +4,8 @@ import { setMessages, setQueryStatus, setSubscribedUsers } from '../actions';
 
 const mapStateToProps = state => ({
     user: state.user,
-    queryStatus: state.message.queryStatus
+    queryStatus: state.message.queryStatus,
+    threadName: state.user.currentThread
 });
 
 const mapDispatchToProps = dispatch => ({

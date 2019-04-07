@@ -2,7 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const SubmitMessage = ({ user, updateSubmissionStatus}) => {
+const SubmitMessage = ({ user, updateSubmissionStatus }) => {
   let input;
 
   return (
@@ -16,7 +16,7 @@ const SubmitMessage = ({ user, updateSubmissionStatus}) => {
         axios.post('api/v1/messages/submit', {
           user_name: user.userName,
           user_password: user.userPassword,
-          thread_id: user.currentThread,
+          thread_name: user.currentThread,
           text: input.value
         })
         .then((res) => {

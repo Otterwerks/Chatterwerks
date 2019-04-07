@@ -6,7 +6,7 @@ import SubmitMessage from '../containers/SubmitMessageContainer';
 import Axios from 'axios';
 
 
-const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubscribedUsers }) => (
+const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubscribedUsers, threadName }) => (
     <div>
         <div className="hidden">
             {setTimeout(function () {
@@ -33,6 +33,10 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubs
         </div>
         <div className="row page-bg p-3">
             <div className="col-sm-3">
+            <div>
+                <h4>Current Channel</h4>
+                <h3>{threadName}</h3>
+            </div>
             <div id="accordion" role="tablist">
                 <div className="card">
                     <div className="card-header" role="tab" id="headingOne">

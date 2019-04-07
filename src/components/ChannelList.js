@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ChannelList = ({ users }) => (
+const ChannelList = ({ threads }) => (
     <div className="">
-    {users.map(user =>
-      <div className="m-1" key={user}><strong>{user}</strong></div>
+    {threads.map(thread =>
+      <div className="m-1" key={thread}><strong>{thread}</strong></div>
     )}
   </div>
 )
