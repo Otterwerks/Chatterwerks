@@ -204,6 +204,24 @@ def api_new_subscription():
     except:
         return jsonify({"response": "failed"})
 
+@app.route('/api/v1/threads/getSubscriptions', methods=['POST'])
+def api_get_subscriptions():
+    #request body {"user_name": <username>, "user_password": <password>}
+    print(request.get_json())
+    r = request.get_json()
+    try:
+        user_id = Get_User_ID(r['user_name'], r['user_password'])
+        if user_id == "id_not_found":
+            return redirect("/login", code=302)
+        subscriptions = Subscription.query.filter_by(user_id=user_id).all()
+        threads_subscribed_to = []
+        for thread in subscriptions:
+            threads.subscribed_to.append(thread.thread_name)
+        return jsonify({"response": "success", "threads": threads_subscribed_to})
+    except:
+        return jsonify({"response": "failed"})
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="443")
