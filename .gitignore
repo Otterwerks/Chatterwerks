@@ -4,3 +4,4 @@ __pycache__
 .DS_Store
 build
 psql_info.py
+otter_pass.py

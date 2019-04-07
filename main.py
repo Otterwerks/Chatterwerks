@@ -4,6 +4,7 @@ import time
 from flask import Flask, send_from_directory, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from psql_info import psql_uri
+from virtual_otter import Otter
 
 app = Flask(__name__, static_url_path='/build')
 app.config['SQLALCHEMY_DATABASE_URI'] = psql_uri
@@ -99,6 +100,9 @@ def api_register_user():
             default_subscription = Subscription(user_id = Get_User_ID(r['user_name'], r['user_password']), thread_id = 1)
             db.session.add(default_subscription)
             db.session.commit()
+            otter_welcome = Message(user_id = -1, thread_id = 1, message_text = "Welcome to the chat, " + r['user_name'])
+            db.session.add(otter_welcome)
+            db.session.commit()
             return jsonify({"response": "success"})
         else:
             return jsonify({"response": "username_taken"})
@@ -142,6 +146,13 @@ def api_submit_message():
         message_to_write = Message(user_id=user_id, thread_id=r['thread_id'], message_text=r['text'], message_timestamp = time.time())
         db.session.add(message_to_write)
         db.session.commit()
+        if r['thread_id'] == 1:
+            otter_listen = Otter(r['text']).interpret()
+            if otter_listen is not None:
+                otter_answer = Message(user_id=-1, thread_id=1, message_text=otter_listen, message_timestamp = time.time())
+                db.session.add(otter_answer)
+                db.session.commit()
+
         return jsonify({"response": "success"})
     except:
         return jsonify({"response": "failed"})
