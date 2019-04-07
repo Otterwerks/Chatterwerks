@@ -1,7 +1,8 @@
 const messageReducerDefaultState = {
   submissionStatus: "",
   queryStatus: "",
-  thread_messages: []
+  thread_messages: [],
+  subscribedUsers: []
 };
 
 const messageReducer = (state = messageReducerDefaultState, action) => {
@@ -20,6 +21,11 @@ const messageReducer = (state = messageReducerDefaultState, action) => {
         return {
           ...state,
           thread_messages: action.thread_messages
+        }
+      case 'SET_SUBSCRIBED_USERS':
+        return {
+          ...state,
+          subscribedUsers: action.subscribedUsers
         }
       default:
         return state

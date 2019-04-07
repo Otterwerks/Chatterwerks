@@ -10,7 +10,7 @@ setInterval(function() {
     const chatField = document.getElementById("chatField");
     if (chatField != null) {
         let isScrolledToBottom = chatField.scrollHeight - chatField.clientHeight <= chatField.scrollTop + 100;
-        if (isScrolledToBottom) {
+        if (isScrolledToBottom || chatField.scrollTop == 0) {
           chatField.scrollTop = chatField.scrollHeight - chatField.clientHeight;
         }
     }
@@ -27,12 +27,13 @@ const initialState = {
   message: {
     submissionStatus: "",
     queryStatus: "COMPLETE",
-    thread_messages: []
+    thread_messages: [],
+    subscribedUsers: []
   },
   user: {
-    isLoggedIn: true,
-    userName: "sam",
-    userPassword: "mypassword",
+    isLoggedIn: false,
+    userName: "",
+    userPassword: "",
     currentThread: 1,
   }
 }

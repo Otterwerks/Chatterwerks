@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import LoginForm from '../containers/LoginFormContainer';
 
 class Login extends Component {
@@ -24,8 +24,16 @@ class Login extends Component {
 
     render() {
         return (
-            <div>
-                {this.state.redirect ? <Redirect to='/chat' /> : <LoginForm setRedirect={this.setRedirect}/>}
+            <div className="m-3 p-5 page-bg">
+                <div className="d-flex justify-content-center m-3">
+                    <h3>Please log in...</h3>
+                </div>
+                <div className="m-5">
+                    {this.state.redirect ? <Redirect to='/chat' /> : <LoginForm setRedirect={this.setRedirect}/>}
+                </div>
+                <div className="d-flex justify-content-center m-3">
+                    <h4>or <Link to='/register'>Register</Link> if you do not have an account.</h4>
+                </div>
             </div>
         )
     }

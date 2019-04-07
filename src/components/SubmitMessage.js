@@ -6,7 +6,7 @@ const SubmitMessage = ({ user, updateSubmissionStatus}) => {
   let input;
 
   return (
-    <div>
+    <div className="w-100">
       <form onSubmit={e => {
         e.preventDefault()
         if (!input.value.trim()) {
@@ -30,12 +30,14 @@ const SubmitMessage = ({ user, updateSubmissionStatus}) => {
         .catch(function (err) {
           console.log(err);
         })
-        input.value = ''
+        input.value = '';
       }}>
-        <input ref={node => input = node} />
-        <button type="submit">
-          Send
-        </button>
+      <div className="input-group">
+        <input className="w-75 text-success" ref={node => input = node} />
+        <div className="input-group-append w-25">
+          <button className="btn btn-secondary w-100" type="submit">Send</button>
+        </div>
+      </div>
       </form>
     </div>
   )

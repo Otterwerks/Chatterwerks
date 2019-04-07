@@ -38,8 +38,11 @@ class Register extends Component {
     render() {
         return this.state.success ? this.RegistrationSuccess()
                                     :<div>
-                                        <RegisterForm setSuccess={this.setSuccess} setErrorMessage={this.setErrorMessage} /> 
-                                        {this.state.showError && this.RegistrationError()}
+                                        <h2>DISCLAIMER: PLEASE USE A THROWAWAY PASSWORD</h2>
+                                        <h3>I have done my best to secure the database of this project but the source code is publicly available so please do not use a real password that you commonly use for other accounts.</h3>
+                                        <div><RegisterForm setSuccess={this.setSuccess} setErrorMessage={this.setErrorMessage} /></div>
+                                        <div>{this.state.showError && this.RegistrationError()}</div>
+                                        <div><h4>Already have an account? <Link to='/login'>Log in</Link></h4></div>
                                     </div>
     }
 };

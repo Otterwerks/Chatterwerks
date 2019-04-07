@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import UserList from './UserList';
+import UserList from '../containers/UserListContainer';
 import MessageList from '../containers/MessageListContainer';
 import SubmitMessage from '../containers/SubmitMessageContainer';
 import Axios from 'axios';
 
 
-const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages }) => (
+const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubscribedUsers }) => (
     <div>
         <div className="hidden">
             {setTimeout(function () {
@@ -19,6 +19,7 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages }) => (
                         if (res.data.response == 'success') {
                         updateQueryStatus('COMPLETE');
                         updateMessages(res.data.messages);
+                        updateSubscribedUsers(res.data.subscribed_users)
                         }
                         console.log(res);
                     })
@@ -29,13 +30,28 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages }) => (
                 }, 5000)
             }
         </div>
-        <div className="row">
-            <div className="col-3">
-                <UserList />
+        <div className="row page-bg p-3">
+            <div className="col-sm-3">
+            <div id="accordion" role="tablist">
+                <div className="card">
+                    <div className="card-header" role="tab" id="headingOne">
+                        <h5 className="mb-0">
+                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Subscribed Users
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" className="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div className="card-body">
+                            <UserList />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="col-9">
+            </div>
+            <div className="col-sm-9 border-secondary">
                 <div className="row">
-                    <div id="chatField" className="col jumbotron chat-window">
+                    <div id="chatField" className="col jumbotron bg-white chat-window">
                         <MessageList />
                     </div>
                 </div>

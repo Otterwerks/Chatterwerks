@@ -1,7 +1,7 @@
 # py lint: skip-file
 import os
 import time
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from psql_info import psql_uri
 
@@ -24,6 +24,7 @@ class Thread(db.Model):
     thread_id = db.Column(db.Integer, primary_key=True)
     thread_name = db.Column(db.String)
     thread_description = db.Column(db.Text)
+    thread_moderator = db.Column(db.String)
     created_on = db.Column(db.Integer)
 
     def __repr__(self):
@@ -117,10 +118,14 @@ def api_message_query():
         if Get_Subscription_ID(user_id, r['thread_id']) == "id_not_found":
             thread_id = 1
         message_query = Message.query.filter_by(thread_id = thread_id).limit(100).all()
+        users_query = Subscription.query.filter_by(thread_id = thread_id).all()
         chat_messages = []
         for message in message_query:
             chat_messages.append({"message_id": message.message_id, "user_name": User.query.filter_by(user_id = message.user_id).first().user_name, "message_text": message.message_text, "message_timestamp": message.message_timestamp})
-        return jsonify({"response": "success", "thread_id": thread_id, "messages": chat_messages})
+        subscribed_users = []
+        for user in users_query:
+            subscribed_users.append(User.query.filter_by(user_id = user.user_id).first().user_name)
+        return jsonify({"response": "success", "thread_id": thread_id, "subscribed_users": subscribed_users, "messages": chat_messages})
     except:
         return jsonify({"response": "failed"})
 

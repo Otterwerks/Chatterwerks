@@ -8,8 +8,6 @@ const RegisterForm = ({ setSuccess, setErrorMessage }) => {
   
     return (
       <div>
-      <h2>DISCLAIMER: PLEASE USE A THROWAWAY PASSWORD</h2>
-      <h3>I have done my best to secure the database of this project but the source code is publicly available so please do not use a real password that you commonly use for other accounts.</h3>
         <form onSubmit={e => {
           e.preventDefault()
           if (!name.value.trim() || !pass1.value.trim()) {

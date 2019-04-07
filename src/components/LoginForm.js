@@ -33,11 +33,23 @@ const LoginForm = ({ updateUser, setRedirect }) => {
             console.log(err);
           })
         }}>
-        <div>
-          <row><div className="col"><h3>Username: <input ref={node => name = node} /></h3></div></row>
-          <row><div className="col"><h3>Password: <input type="password" ref={node => pass = node} /></h3></div></row>
-          <row><div className="col"><button type="submit">Login</button></div></row>
-        </div>
+          <div className="">
+            <div className="form-group input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Username</span>
+              </div>
+              <input className="form-control" ref={node => name = node} />
+            </div>
+            <div className="form-group input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Password</span>
+              </div>
+              <input className="form-control" type="password" ref={node => pass = node} />
+            </div>
+            <div className="form-group">
+              <button className="btn btn-primary mb-2" type="submit">Login</button>
+            </div>
+          </div>
         </form>
       </div>
     )

@@ -11,3 +11,24 @@
 .message-sent {
   text-align: right;
 }
+
+.message {
+  width: auto;
+}
+
+.chat-input {
+  width: 85%;
+}
+
+.color-2 {
+  background-color: #FFEFD8;
+}
+
+.color-1 {
+  background-color: #FFFAE6;
+}
+
+.page-bg {
+  background-color: papayawhip;
+}
+

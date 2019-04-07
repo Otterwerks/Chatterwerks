@@ -2,19 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Home = () => (
-    <div>
-        <row>
-            <div className="col-sm"></div>
-            <div className="col-sm"><h2>A chat, that works!</h2></div>
-            <div className="col-sm"></div>
-        </row>
-        <row>
-            <div className="col-md"></div>
-            <div className="col-md">
-                <p><Link to='/login'>Login</Link>, or <Link to='/register'>Sign Up</Link>.</p>
-            </div>
-            <div className="col-md"></div>
-        </row>
+    <div className="page-bg m-3 p-8">
+    <div className="d-flex justify-content-center m-5 p-5">
+        <div><h2>A chat, that works!</h2></div>
+    </div>
+    <div className="d-flex justify-content-center mb-3 pb-3">
+        <div><p><Link to='/login'>Login</Link>, or <Link to='/register'>Sign Up</Link>.</p></div>
+    </div>
     </div>
 )
 

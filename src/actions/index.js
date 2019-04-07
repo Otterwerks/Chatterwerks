@@ -28,3 +28,8 @@ export const setUser = (user = defaultUserObject) => ({
     currentThread: user.currentThread,
     isLoggedIn: user.isLoggedIn
 });
+
+export const setSubscribedUsers = (users = []) => ({
+    type: 'SET_SUBSCRIBED_USERS',
+    subscribedUsers: users
+})
