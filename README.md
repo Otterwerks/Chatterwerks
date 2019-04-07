@@ -5,9 +5,9 @@ _A chat that works_
 
 Heroku Links:
 
-Heroku live/production <a href="https://otterwerks-chat-app.herokuapp.com"></a>
+Heroku live/production <a href="https://otterwerks-chat-app.herokuapp.com">HERE</a>
 
-Heroku development/staging <a href="https://otterwerks-chat-staging.herokuapp.com"></a>
+Heroku development/staging <a href="https://otterwerks-chat-staging.herokuapp.com">HERE</a>
 
 
 <br>
