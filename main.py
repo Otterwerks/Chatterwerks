@@ -191,7 +191,8 @@ def api_new_thread():
             Create_Subscription(user_id, thread_id)
             for user in r['initial_subscriptions']:
                 user_id_to_subscribe = User.query.filter_by(user_name=user).first().user_id
-                Create_Subscription(user_id_to_subscribe, thread_id)
+                if user_id_to_subscribe != user_id:
+                    Create_Subscription(user_id_to_subscribe, thread_id)
             return jsonify({"response": "success"})
         else:
             return jsonify({"response": "exists"})
