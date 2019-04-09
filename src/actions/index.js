@@ -38,3 +38,8 @@ export const setAvailableThreads = (threads = []) => ({
     type: 'SET_AVAILABLE_THREADS',
     availableThreads: threads
 });
+
+export const switchThread = (thread = "Home") => ({
+    type: 'SWITCH_THREAD',
+    currentThread: thread
+})

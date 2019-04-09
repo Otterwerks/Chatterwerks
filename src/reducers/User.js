@@ -21,6 +21,11 @@ const userReducer = (state = userReducerDefaultState, action) => {
           ...state,
           availableThreads: action.availableThreads
         }
+      case 'SWITCH_THREAD':
+        return {
+          ...state,
+          currentThread: action.currentThread
+        }
       default:
         return state
     }

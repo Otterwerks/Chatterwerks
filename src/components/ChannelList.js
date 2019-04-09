@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ChannelList = ({ threads }) => (
+const ChannelList = ({ threads, setThread }) => (
     <div className="">
     {threads.map(thread =>
-      <div className="m-1" key={thread}><strong>{thread}</strong></div>
+      <button type="button" onClick={() => setThread(thread)} className="m-1" key={thread}><strong>{thread}</strong></button>
     )}
   </div>
 )
