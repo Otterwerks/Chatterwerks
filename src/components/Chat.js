@@ -6,7 +6,7 @@ import SubmitMessage from '../containers/SubmitMessageContainer';
 import Axios from 'axios';
 
 
-const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubscribedUsers, threadName }) => (
+const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubscribedUsers, updateSubscriptions, threadName }) => (
     <div>
         <div className="hidden">
             {setTimeout(function () {
@@ -18,9 +18,10 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubs
                         thread_name: user.currentThread
                     }).then((res) => {
                         if (res.data.response == 'success') {
-                        updateQueryStatus('COMPLETE');
-                        updateMessages(res.data.messages);
-                        updateSubscribedUsers(res.data.subscribed_users)
+                            updateMessages(res.data.messages);
+                            updateSubscribedUsers(res.data.subscribed_users);
+                            updateSubscriptions(res.data.threads);
+                            updateQueryStatus('COMPLETE');
                         }
                         console.log(res);
                     })

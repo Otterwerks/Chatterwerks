@@ -32,4 +32,9 @@ export const setUser = (user = defaultUserObject) => ({
 export const setSubscribedUsers = (users = []) => ({
     type: 'SET_SUBSCRIBED_USERS',
     subscribedUsers: users
-})
+});
+
+export const setAvailableThreads = (threads = []) => ({
+    type: 'SET_AVAILABLE_THREADS',
+    availableThreads: threads
+});

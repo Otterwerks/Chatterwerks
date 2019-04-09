@@ -141,7 +141,11 @@ def api_message_query():
         subscribed_users = []
         for user in users_query:
             subscribed_users.append(User.query.filter_by(user_id=user.user_id).first().user_name)
-        return jsonify({"response": "success", "thread_name": Thread.query.filter_by(thread_id=thread_id).first().thread_name, "subscribed_users": subscribed_users, "messages": chat_messages})
+        subscriptions = Subscription.query.filter_by(user_id=user_id).all()
+        threads_subscribed_to = []
+        for thread in subscriptions:
+            threads_subscribed_to.append(Thread.query.filter_by(thread_id=thread.thread_id).first().thread_name)
+        return jsonify({"response": "success", "thread_name": Thread.query.filter_by(thread_id=thread_id).first().thread_name, "subscribed_users": subscribed_users, "threads": threads_subscribed_to, "messages": chat_messages})
     except:
         return jsonify({"response": "failed"})
 
@@ -224,7 +228,7 @@ def api_get_subscriptions():
         subscriptions = Subscription.query.filter_by(user_id=user_id).all()
         threads_subscribed_to = []
         for thread in subscriptions:
-            threads.subscribed_to.append(thread.thread_name)
+            threads_subscribed_to.append(Thread.query.filter_by(thread_id=thread.thread_id).first().thread_name)
         return jsonify({"response": "success", "threads": threads_subscribed_to})
     except:
         return jsonify({"response": "failed"})

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Chat from '../components/Chat'
-import { setMessages, setQueryStatus, setSubscribedUsers } from '../actions';
+import { setMessages, setQueryStatus, setSubscribedUsers, setAvailableThreads } from '../actions';
 
 const mapStateToProps = state => ({
     user: state.user,
@@ -11,7 +11,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     updateMessages: messages => dispatch(setMessages(messages)),
     updateQueryStatus: status => dispatch(setQueryStatus(status)),
-    updateSubscribedUsers: users => dispatch(setSubscribedUsers(users))
+    updateSubscribedUsers: users => dispatch(setSubscribedUsers(users)),
+    updateSubscriptions: threads => dispatch(setAvailableThreads(threads))
 });
 
 export default connect(

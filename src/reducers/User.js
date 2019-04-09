@@ -2,7 +2,8 @@ const userReducerDefaultState = {
   userName: "",
   userPassword: "",
   currentThread: "Home",
-  isLoggedIn: false
+  isLoggedIn: false,
+  availableThreads: []
 };
 
 const userReducer = (state = userReducerDefaultState, action) => {
@@ -14,6 +15,11 @@ const userReducer = (state = userReducerDefaultState, action) => {
           userPassword: action.userPassword,
           currentThread: action.currentThread,
           isLoggedIn: action.isLoggedIn
+        }
+      case 'SET_AVAILABLE_THREADS':
+        return {
+          ...state,
+          availableThreads: action.availableThreads
         }
       default:
         return state

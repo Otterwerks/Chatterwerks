@@ -2,7 +2,8 @@ const messageReducerDefaultState = {
   submissionStatus: "",
   queryStatus: "",
   thread_messages: [],
-  subscribedUsers: []
+  subscribedUsers: [],
+  userIsModerator: false
 };
 
 const messageReducer = (state = messageReducerDefaultState, action) => {
