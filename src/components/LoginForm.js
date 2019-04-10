@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const LoginForm = ({ updateUser, setRedirect }) => {
+const LoginForm = ({ updateUser, setRedirect, setError }) => {
     let name;
     let pass;
   
@@ -26,6 +26,8 @@ const LoginForm = ({ updateUser, setRedirect }) => {
               })
               setRedirect(true)
               return
+            } else if (res.data.response == 'incorrect') {
+              setError("Username or password incorrect.")
             }
             console.log(res);
           })

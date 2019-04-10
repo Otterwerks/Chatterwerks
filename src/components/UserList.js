@@ -8,7 +8,7 @@ const UserList = ({ users, user }) => (
                     onClick={() => Axios.post('/api/v1/threads/new', {
                                               "user_name": user.userName,
                                               "user_password": user.userPassword,
-                                              "thread_name": ("Chat with " + member),
+                                              "thread_name": (user.userName + " and " + member),
                                               "thread_description": "Generated from clicking a user's name",
                                               "initial_subscriptions": [member]})
                                         .then((res) => {

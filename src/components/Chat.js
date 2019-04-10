@@ -34,9 +34,9 @@ const Chat = ({ user, queryStatus, updateQueryStatus, updateMessages, updateSubs
         </div>
         <div className="row page-bg p-3">
             <div className="col-sm-3">
-            <div>
-                <h4>Current Channel</h4>
-                <h3>{threadName}</h3>
+            <div className="m-1 panel-bg p-2">
+                <h4 className="d-flex justify-content-center">Current Channel</h4>
+                <h3 className="d-flex text-info justify-content-center">{threadName}</h3>
             </div>
             <div id="accordion" role="tablist">
                 <div className="card">

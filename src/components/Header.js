@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Header = () => (
-    <div className="row">
-        <div className="col"></div>
-        <div className="col-6">
+    <div className="">
+        <div className="d-flex justify-content-center m-3">
             <h1>Chatterwerks</h1>
         </div>
-        <div className="col"></div>
     </div>
 )
 
