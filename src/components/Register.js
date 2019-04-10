@@ -23,9 +23,9 @@ class Register extends Component {
     };
 
     RegistrationSuccess = () => (
-        <div className="m-3 p-5 page-bg d-flex justify-content-center">
-            <h2>You have successfully registered!</h2>
-            <h3>Please <Link to='/login'>Login</Link>.</h3>
+        <div className="m-3 p-5 page-bg">
+            <h2 className="d-flex justify-content-center">You have successfully registered!</h2>
+            <h3 className="d-flex justify-content-center">Please <Link to='/login'>Login</Link>.</h3>
         </div>
     );
 

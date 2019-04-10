@@ -21,11 +21,11 @@
 }
 
 .color-2 {
-  background-color: #FFEFD8;
+  background-color: rgb(247, 220, 183);
 }
 
 .color-1 {
-  background-color: #FFFAE6;
+  background-color: mediumturquoise;
 }
 
 .page-bg {
@@ -36,3 +36,6 @@
   background-color: lightgray;
 }
 
+.site-bg {
+  background-color: tomato;
+}

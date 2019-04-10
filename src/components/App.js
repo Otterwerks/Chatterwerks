@@ -10,7 +10,7 @@ import Chat from '../containers/ChatContainer';
 
 const App = ({ store }) => (
   <Provider store={store}>
-    <div className="container">
+    <div className="container site-bg pb-5">
     <Router>
       <Route path="/" component={Header} />
       <Route exact path="/" component={Home} />
