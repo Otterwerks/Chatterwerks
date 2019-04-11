@@ -208,7 +208,7 @@ def api_new_subscription():
         user_id = Get_User_ID(r['user_name'], r['user_password'])
         thread_id = Get_Thread_ID(r['thread_to_subscribe'])
         id_to_subscribe = User.query.filter_by(user_name=r['user_to_subscribe']).first().user_id
-        if user_id == "id_not_found" or id_to_subscribe == None or thread_id == None:
+        if user_id == "id_not_found" or id_to_subscribe == None or thread_id == "id_not_found":
             return jsonify({"response": "query error"})
         if user_id != Thread.query.filter_by(thread_id=thread_id).first().thread_moderator:
             return jsonify({"response": "permission denied"})
