@@ -38,6 +38,11 @@ def delete_subscription(index):
     del_sub = Subscription.query.filter_by(subscription_id=index).first()
     db.session.delete(del_sub)
     db.session.commit()
+    
+def delete_message(index):
+    del_mes = Message.query.filter_by(message_id=index).first()
+    db.session.delete(del_mes)
+    db.session.commit()
 
 @pytest.fixture
 def client():
@@ -239,7 +244,51 @@ def test_subscription_query(client):
     delete_thread(-10)
     delete_subscription(-10)
     
-
+def test_submit_message(client):
+    mock_user(-10, test_user_name, test_user_password)
+    mock_thread(-10, test_thread_name)
+    mock_subscription(-10, -10, -10)
+    
+    assert Message.query.filter_by(user_id=-10).first() == None
+    
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/messages/submit', json={
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'message_text': 'test message'
+        })
+        json_data = rv.get_json()
+        assert rv.get_json()['response'] == 'success'
+        assert Message.query.filter_by(user_id=-10).first() != None
+        
+    delete_message(Message.query.filter_by(user_id=-10).first().message_id)
+    
+    # invalid username test
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/messages/submit', json={
+            'user_name': (test_user_name + "X"), 'user_password': test_user_password, 'thread_name': test_thread_name, 'message_text': 'test message'
+        })
+        assert rv.status_code == 302
+        assert Message.query.filter_by(user_id=-10).first() == None
+        
+    # invalid thread name test    
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/messages/submit', json={
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': (test_thread_name + "X"), 'message_text': 'test message'
+        })
+        assert rv.status_code == 302
+        assert Message.query.filter_by(user_id=-10).first() == None
+        
+    # invalid subscription test
+    delete_subscription(-10)
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/messages/submit', json={
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'message_text': 'test message'
+        })
+        assert rv.status_code == 302
+        assert Message.query.filter_by(user_id=-10).first() == None
+        
+    delete_user(-10)
+    delete_thread(-10)
+    
     
     
     
