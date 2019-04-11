@@ -171,14 +171,6 @@ def test_new_subscription(client):
         assert rv.get_json()['response'] == 'success'
         assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() != None
         
-    with main.app.test_client() as c:
-        rv = c.post('/api/v1/threads/subscribe', json={
-            'user_name': test_user_name, 'user_password': test_user_password, 'thread_to_subscribe': test_thread_name, 'user_to_subscribe': test_user_name
-        })
-        json_data = rv.get_json()
-        assert rv.get_json()['response'] == 'success'
-        assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() != None
-        
     delete_subscription(Subscription.query.filter_by(user_id=-10, thread_id=-10).first())
     
     # invalid user credentials test
@@ -198,18 +190,56 @@ def test_new_subscription(client):
         json_data = rv.get_json()
         assert rv.get_json()['response'] == 'query error'
         assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() == None
+        
+    # invalid user test
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/threads/subscribe', json={
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_to_subscribe': (test_thread_name), 'user_to_subscribe': (test_user_name + "X")
+        })
+        json_data = rv.get_json()
+        assert rv.get_json()['response'] == 'query error'
+        assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() == None
    
     # thread moderator test
-    delete_thread
+    delete_thread(-10)
+    db.session.add(Thread(thread_id=test_thread_id, thread_name=test_thread_name, thread_moderator="X"))
+    db.session.commit()
+    
     with main.app.test_client() as c:
         rv = c.post('/api/v1/threads/subscribe', json={
             'user_name': test_user_name, 'user_password': test_user_password, 'thread_to_subscribe': test_thread_name, 'user_to_subscribe': test_user_name
         })
         json_data = rv.get_json()
-        assert rv.get_json()['response'] == 'query error'
+        assert rv.get_json()['response'] == 'permission denied'
         assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() == None
+        
+    delete_thread(-10)
+    delete_user(-10)
     
+def test_subscription_query(client):
+    mock_user(-10, test_user_name, test_user_password)
+    mock_thread(-10, test_thread_name)
+    mock_subscription(-10, -10, -10)
     
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/threads/getSubscriptions', json={
+            'user_name': test_user_name, 'user_password': test_user_password
+        })
+        json_data = rv.get_json()
+        assert rv.get_json()['response'] == 'success'
+        assert len(rv.get_json()['threads']) == 1
+        
+    delete_user(-10)
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/threads/getSubscriptions', json={
+            'user_name': test_user_name, 'user_password': test_user_password
+        })
+        assert rv.status_code == 302
+    
+    delete_thread(-10)
+    delete_subscription(-10)
+    
+
     
     
     
