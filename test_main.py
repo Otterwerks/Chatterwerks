@@ -23,6 +23,10 @@ def mock_thread(index, name):
 def mock_subscription(index, user, thread):
     db.session.add(Subscription(subscription_id=index, user_id=user, thread_id=thread))
     db.session.commit()
+    
+def mock_message(index, user, thread, text):
+    db.session.add(Message(message_id=index, user_id=user, thread_id=thread, message_text=text)
+    db.session.commit()
 
 def delete_user(index):
     del_user = User.query.filter_by(user_id=index).first()
@@ -289,6 +293,22 @@ def test_submit_message(client):
     delete_user(-10)
     delete_thread(-10)
     
+def test_message_query(client):
+    mock_user(-10, test_user_name, test_user_password)
+    mock_thread(-10, test_thread_name)
+    mock_subscription(-10, -10, -10)
+    mock_message(-10, -10, -10, "test message")
+                   
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/messages/query', json={
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name
+        })
+        json_data = rv.get_json()
+        assert rv.get_json()['response'] == 'success'
+        assert rv.get_json()['thread_name'] == test_thread_name
+        assert rv.get_json()['subscribed_users'] == [test_user_name]
+        assert rv.get_json()['threads'] == [test_thread_name]
+        assert len(rv.get_json()['messages']) > 0
     
     
     
