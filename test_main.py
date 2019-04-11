@@ -96,25 +96,24 @@ def test_create_subscription(client):
     db.session.commit()
     delete_user(-10)
     delete_thread(-10)
-    
-# with main.app.test_client() as c:
-#     rv = c.post('/api/v1/users/login', json={
-#         'user_name': test_user_name, 'user_password': test_user_password
-#     })
-#     json_data = rv.get_json()
-#     assert rv.get_json()['response'] == 'success'
-    
-# with main.app.test_client() as c:
-#     rv = c.post('/api/v1/users/login', json={
-#         'user_name': test_user_name, 'user_password': "y"
-#     })
-#     json_data = rv.get_json()
-#     assert rv.get_json()['response'] == 'incorrect'
 
-# with main.app.test_client() as c:
-#     rv = c.post('/api/v1/users/login', json={
-#         'user_name': (test_user_name + "x"), 'user_password': "y"
-#     })
-#     json_data = rv.get_json()
-#     assert rv.get_json()['response'] == 'failed'
-    
+def test_login(client):
+    mock_user(-10, test_user_name, test_user_password)
+
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/users/login', json={
+            'user_name': test_user_name, 'user_password': test_user_password
+        })
+        json_data = rv.get_json()
+        assert rv.get_json()['response'] == 'success'
+        
+    with main.app.test_client() as c:
+        rv = c.post('/api/v1/users/login', json={
+            'user_name': test_user_name, 'user_password': "y"
+        })
+        json_data = rv.get_json()
+        assert rv.get_json()['response'] == 'incorrect'
+
+    delete_user(-10)
+
+
