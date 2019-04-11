@@ -61,8 +61,6 @@ def test_db_read_write(client):
     delete_user(test_user_id)
     delete_thread(test_thread_id)
 
-
-
 def test_resolve_user(client):
     mock_user(-10, test_user_name, test_user_password)
     assert Get_User_ID(test_user_name, test_user_password) == -10
