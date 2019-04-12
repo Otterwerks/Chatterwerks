@@ -310,6 +310,10 @@ def test_message_query(client):
         assert rv.get_json()['threads'] == [test_thread_name]
         assert len(rv.get_json()['messages']) > 0
     
+    delete_subscription(-10)
+    delete_message(-10)
+    delete_user(-10)
+    delete_thread(-10)
     
     
 
