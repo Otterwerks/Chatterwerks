@@ -28,6 +28,14 @@ Otter is the chat bot in the home channel that I adapted from a command line <a 
 
 - Talk to Otter by starting off your message with ```Hey Otter, ```
 
+## Features
+- Home chat channel with chat bot
+- Private chat channels between users, click a username to start a private chat
+- Back End strict and acceptance tested with Pytest
+- Deployed using the Heroku development pipeline
+- Responsive Bootstrap 4 design
+
+
 ## Security
 In designing this project I wanted to make sure that users would not be able to manipulate data stored in the browser to gain unauthorized access to channels or submit fraudulent messages. The login process for Chatterwerks simply verifies that an associated User ID exists in the User table for the submitted credentials and stores those credentials in the browser for future requests if they are valid. 
 
@@ -38,7 +46,28 @@ User credentials are submitting with this request in order to allow the backend 
 Sending a message also involves submitting user credentials to not only authorize the user but also validate that the user is subscribed to the channel they are attempting to submit a message to.
 
 ## Technical
-Clients use interval polling to receive new messages from the database. I understand this method carries additional network overhead and I chose to implement this method beause it allowed me to continue making progress in developing other aspects of the project.
+Clients use interval polling to receive new messages from the database. I understand this method carries additional network overhead and I chose to implement this method because it allowed me to continue making progress in developing other aspects of the project.
+
+- Front End (JavaScript)
+  - React
+  - React-Router
+  - Redux
+  - Axios
+- Back End (Python)
+  - Flask
+  - SQLAlchemy
+  - PyTest
+  - PostgreSQL
+  - Gunicorn
+- Hosts
+  - Heroku Pipeline (staging/production)
+  - Heroku Postgres add-on, two separate for staging and production
+  
+#### Database Structure
+_coming soon_
+  
+#### Known Polling Bug
+The polling works by setting a delay to update the client store with new information through an HTTP request. The delayed function is set to run when the chat component renders. Under normal circumstances this works as intented because the new data from the request triggers a rerendering of the component and sets a new delayed function, so on and so forth. The problem is that any other interaction that causes the component to rerender will trigger additional delayed requests. This means that every time the user selects a different chat channel, an unnecessary parallel request is initialized. While this can make the application be perceived as 'speedier', it is not the intended behavior and has the potential to result in continuous back to back requests. The structure of the request function sets a ```queryStatus``` store value to ```requested``` after the request is sent and ```complete``` after a response is received. A new request can only be made if the ```queryStatus``` is ```complete``` to prevent request overlap. I believe the most straightforward way to solve this is to place the request into an isolated component.
 
 ## Resources Used:
 - <a href="https://redux.js.org/basics/example">Redux JS To-Do Example</a>
@@ -48,4 +77,4 @@ Clients use interval polling to receive new messages from the database. I unders
 - <a href="https://www.udemy.com/react-2nd-edition/">The Complete React Web Developer Course (with Redux)</a>
 - <a href="https://getbootstrap.com/docs/4.0/getting-started/introduction/">Bootstrap Quickstart Documentation</a>
 - My previous project <a href="https://github.com/Otterwerks/Tweet-Finder">Tweet-Finder</a>
-- <a href=""></a>
+- <a href="http://flask.pocoo.org/docs/1.0/testing/">Testing Flask Applications</a>
