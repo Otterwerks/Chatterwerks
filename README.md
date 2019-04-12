@@ -16,6 +16,8 @@ Heroku development/staging <a href="https://otterwerks-chat-staging.herokuapp.co
 
 <br>
 
+<img src="chatterwerks_sample.png" width="600">
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Summary
