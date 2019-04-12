@@ -158,7 +158,7 @@ def api_submit_message():
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
         thread_id = Get_Thread_ID(r['thread_name'])
-        if user_id == "id_not_found" or thread_id == "id_not_found":
+        if user_id == "id_not_found" or thread_id == "id_not_found" or Get_Subscription_ID(user_id, thread_id) == "id_not_found":
             return redirect("/login", code=302)
         message_to_write = Message(user_id=user_id, thread_id=thread_id, message_text=r['text'], message_timestamp=time.time())
         db.session.add(message_to_write)
