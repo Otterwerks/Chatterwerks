@@ -64,7 +64,13 @@ Clients use interval polling to receive new messages from the database. I unders
   - Heroku Postgres add-on, two separate for staging and production
   
 #### Database Structure
-_coming soon_
+<img src="db_structure.png" width="600">
+
+- Bold: primary key
+- Lines: foreign key relationship
+- Red: integer data type
+- Yellow: string/text data type
+
   
 #### Known Polling Bug
 The polling works by setting a delay to update the client store with new information through an HTTP request. The delayed function is set to run when the chat component renders. Under normal circumstances this works as intented because the new data from the request triggers a rerendering of the component and sets a new delayed function, so on and so forth. The problem is that any other interaction that causes the component to rerender will trigger additional delayed requests. This means that every time the user selects a different chat channel, an unnecessary parallel request is initialized. While this can make the application be perceived as 'speedier', it is not the intended behavior and has the potential to result in continuous back to back requests. The structure of the request function sets a ```queryStatus``` store value to ```requested``` after the request is sent and ```complete``` after a response is received. A new request can only be made if the ```queryStatus``` is ```complete``` to prevent request overlap. I believe the most straightforward way to solve this is to place the request into an isolated component.
