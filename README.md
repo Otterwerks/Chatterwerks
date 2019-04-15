@@ -45,6 +45,11 @@ User credentials are submitting with this request in order to allow the backend 
 #### Sending a message
 Sending a message also involves submitting user credentials to not only authorize the user but also validate that the user is subscribed to the channel they are attempting to submit a message to.
 
+## Testing
+The back-end of this project has multiple internal API endpoints and uses some functions for resolving record IDs within tables. I used PyTest to write the tests and decided to have the tests interact directly with the PostgreSQL database. Due to the nature of interacting with the database, I tried to write the tests in a way where they verified an initial state, performed an operation, and then verified the operation behaved as expected.
+
+<img src="chatterwerks_tests.png" width="600">
+
 ## Technical
 Clients use interval polling to receive new messages from the database. I understand this method carries additional network overhead and I chose to implement this method because it allowed me to continue making progress in developing other aspects of the project.
 
