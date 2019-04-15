@@ -25,7 +25,7 @@ def mock_subscription(index, user, thread):
     db.session.commit()
     
 def mock_message(index, user, thread, text):
-    db.session.add(Message(message_id=index, user_id=user, thread_id=thread, message_text=text)
+    db.session.add(Message(message_id=index, user_id=user, thread_id=thread, message_text=text))
     db.session.commit()
 
 def delete_user(index):
@@ -134,13 +134,16 @@ def test_user_register(client):
         assert rv.get_json()['response'] == 'success'
         assert User.query.filter_by(user_name=test_user_name, user_password=test_user_password).first() != None
 
+
     with main.app.test_client() as c:
         rv = c.post('/api/v1/users/register', json={
             'user_name': test_user_name, 'user_password': test_user_password
         })
         json_data = rv.get_json()
         assert rv.get_json()['response'] == 'username_taken'
-        
+
+
+    delete_subscription(Subscription.query.filter_by(user_id=(User.query.filter_by(user_name=test_user_name).first().user_id)).first().subscription_id)
     delete_user(User.query.filter_by(user_name=test_user_name, user_password=test_user_password).first().user_id)
     
 def test_new_thread(client):
@@ -149,7 +152,7 @@ def test_new_thread(client):
     
     with main.app.test_client() as c:
         rv = c.post('/api/v1/threads/new', json={
-            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'thread_description': 'X'
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'thread_description': 'X', 'initial_subscriptions': []
         })
         json_data = rv.get_json()
         assert rv.get_json()['response'] == 'success'
@@ -157,11 +160,12 @@ def test_new_thread(client):
         
     with main.app.test_client() as c:
         rv = c.post('/api/v1/threads/new', json={
-            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'thread_description': 'X'
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'thread_description': 'X', 'initial_subscriptions': []
         })
         json_data = rv.get_json()
         assert rv.get_json()['response'] == 'exists'
         
+    delete_subscription(Subscription.query.filter_by(user_id=-10).first().subscription_id)
     delete_user(-10)
     delete_thread(Thread.query.filter_by(thread_name=test_thread_name).first().thread_id)
     
@@ -170,7 +174,7 @@ def test_new_subscription(client):
     db.session.add(Thread(thread_id=test_thread_id, thread_name=test_thread_name, thread_moderator=test_user_name))
     db.session.commit()
     
-    assert Subscription.query.filter_by(user_id=-10, thrad_id=-10).first() == None
+    assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() == None
     
     with main.app.test_client() as c:
         rv = c.post('/api/v1/threads/subscribe', json={
@@ -180,7 +184,7 @@ def test_new_subscription(client):
         assert rv.get_json()['response'] == 'success'
         assert Subscription.query.filter_by(user_id=-10, thread_id=-10).first() != None
         
-    delete_subscription(Subscription.query.filter_by(user_id=-10, thread_id=-10).first())
+    delete_subscription(Subscription.query.filter_by(user_id=-10, thread_id=-10).first().subscription_id)
     
     # invalid user credentials test
     with main.app.test_client() as c:
@@ -237,8 +241,10 @@ def test_subscription_query(client):
         json_data = rv.get_json()
         assert rv.get_json()['response'] == 'success'
         assert len(rv.get_json()['threads']) == 1
-        
+    
+    delete_subscription(-10)
     delete_user(-10)
+
     with main.app.test_client() as c:
         rv = c.post('/api/v1/threads/getSubscriptions', json={
             'user_name': test_user_name, 'user_password': test_user_password
@@ -246,7 +252,6 @@ def test_subscription_query(client):
         assert rv.status_code == 302
     
     delete_thread(-10)
-    delete_subscription(-10)
     
 def test_submit_message(client):
     mock_user(-10, test_user_name, test_user_password)
@@ -257,7 +262,7 @@ def test_submit_message(client):
     
     with main.app.test_client() as c:
         rv = c.post('/api/v1/messages/submit', json={
-            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'message_text': 'test message'
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'text': 'test message'
         })
         json_data = rv.get_json()
         assert rv.get_json()['response'] == 'success'
@@ -268,7 +273,7 @@ def test_submit_message(client):
     # invalid username test
     with main.app.test_client() as c:
         rv = c.post('/api/v1/messages/submit', json={
-            'user_name': (test_user_name + "X"), 'user_password': test_user_password, 'thread_name': test_thread_name, 'message_text': 'test message'
+            'user_name': (test_user_name + "X"), 'user_password': test_user_password, 'thread_name': test_thread_name, 'text': 'test message'
         })
         assert rv.status_code == 302
         assert Message.query.filter_by(user_id=-10).first() == None
@@ -276,7 +281,7 @@ def test_submit_message(client):
     # invalid thread name test    
     with main.app.test_client() as c:
         rv = c.post('/api/v1/messages/submit', json={
-            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': (test_thread_name + "X"), 'message_text': 'test message'
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': (test_thread_name + "X"), 'text': 'test message'
         })
         assert rv.status_code == 302
         assert Message.query.filter_by(user_id=-10).first() == None
@@ -285,7 +290,7 @@ def test_submit_message(client):
     delete_subscription(-10)
     with main.app.test_client() as c:
         rv = c.post('/api/v1/messages/submit', json={
-            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'message_text': 'test message'
+            'user_name': test_user_name, 'user_password': test_user_password, 'thread_name': test_thread_name, 'text': 'test message'
         })
         assert rv.status_code == 302
         assert Message.query.filter_by(user_id=-10).first() == None

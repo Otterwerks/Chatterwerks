@@ -152,7 +152,7 @@ def api_message_query():
 
 @app.route('/api/v1/messages/submit', methods=['POST'])
 def api_submit_message():
-    # request body {"user_name": <username>, "user_password": <password>, "thread_name": <current thread name>, "message_text": <message>}
+    # request body {"user_name": <username>, "user_password": <password>, "thread_name": <current thread name>, "ext": <message>}
     print(request.get_json())
     r = request.get_json()
     try:
@@ -207,12 +207,12 @@ def api_new_subscription():
     try:
         user_id = Get_User_ID(r['user_name'], r['user_password'])
         thread_id = Get_Thread_ID(r['thread_to_subscribe'])
-        id_to_subscribe = User.query.filter_by(user_name=r['user_to_subscribe']).first().user_id
-        if user_id == "id_not_found" or id_to_subscribe == None or thread_id == "id_not_found":
+        user_to_subscribe = User.query.filter_by(user_name=r['user_to_subscribe']).first()
+        if user_id == "id_not_found" or user_to_subscribe == None or thread_id == "id_not_found":
             return jsonify({"response": "query error"})
-        if user_id != Thread.query.filter_by(thread_id=thread_id).first().thread_moderator:
+        if r['user_name'] != Thread.query.filter_by(thread_id=thread_id).first().thread_moderator:
             return jsonify({"response": "permission denied"})
-        Create_Subscription(id_to_subscribe, thread_id)
+        Create_Subscription(user_to_subscribe.user_id, thread_id)
         return jsonify({"response": "success"})
     except:
         return jsonify({"response": "failed"})
