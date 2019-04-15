@@ -75,7 +75,6 @@ Clients use interval polling to receive new messages from the database. I unders
 - Lines: foreign key relationship
 - Red: integer data type
 - Yellow: string/text data type
-- Note: the ```Thread``` table now has an additional column ```thread_moderator```
 
   
 #### Known Polling Bug
