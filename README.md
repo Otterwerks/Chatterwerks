@@ -81,7 +81,11 @@ Clients use interval polling to receive new messages from the database. I unders
 The polling works by setting a delay to update the client store with new information through an HTTP request. The delayed function is set to run when the chat component renders. Under normal circumstances this works as intented because the new data from the request triggers a rerendering of the component and sets a new delayed function, so on and so forth. The problem is that any other interaction that causes the component to rerender will trigger additional delayed requests. This means that every time the user selects a different chat channel, an unnecessary parallel request is initialized. While this can make the application be perceived as 'speedier', it is not the intended behavior and has the potential to result in continuous back to back requests. The structure of the request function sets a ```queryStatus``` store value to ```requested``` after the request is sent and ```complete``` after a response is received. A new request can only be made if the ```queryStatus``` is ```complete``` to prevent request overlap. I believe the most straightforward way to solve this is to place the request into an isolated component.
 
 ## Deployment
-_instructions coming soon_
+_full instructions coming soon_
+
+The main site deployment process is almost identical to <a href="https://github.com/Otterwerks/Tweet-Finder">Tweet-Finder</a>, except that the only hidden file that needs to be created is ```psql_info.py``` containing a variable ```psql_uri = <your postgres database URI>```, in the project root directory. The project demos on Heroku use local environment variables instead of a static URI, per Heroku's suggestion.
+
+For now you're on your own in setting up a PostgreSQL server, but I have included the script ```clear_database.py``` to wipe and reinitialize the database. This script needs to be run from the project root directory.
 
 ## Resources Used:
 - <a href="https://redux.js.org/basics/example">Redux JS To-Do Example</a>
