@@ -34,7 +34,7 @@ CREATE TABLE "Subscription" (
 PRIMARY KEY ("subscription_id")
 );
 
-ALTER TABLE "Messages" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("user_id");
-ALTER TABLE "Messages" ADD FOREIGN KEY ("thread_id") REFERENCES "Threads" ("thread_id");
-ALTER TABLE "Subscriptions" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("user_id");
-ALTER TABLE "Subscriptions" ADD FOREIGN KEY ("thread_id") REFERENCES "Threads" ("thread_id");
+ALTER TABLE "Messages" ADD FOREIGN KEY ("user_id") REFERENCES "User" ("user_id");
+ALTER TABLE "Messages" ADD FOREIGN KEY ("thread_id") REFERENCES "Thread" ("thread_id");
+ALTER TABLE "Subscriptions" ADD FOREIGN KEY ("user_id") REFERENCES "User" ("user_id");
+ALTER TABLE "Subscriptions" ADD FOREIGN KEY ("thread_id") REFERENCES "Thread" ("thread_id");
